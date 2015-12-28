@@ -1,0 +1,10 @@
+images:
+    star-img: star.png
+
+fonts:
+    size: 12
+    family: FreeMono.ttf
+
+window:
+    height: 800
+    width: 1000
