@@ -21,7 +21,6 @@ add_executable(solar
   GLFW.cpp
   GLFW.h
   main.cpp
-  Ray.h
   Renderer.cpp
   Renderer.h
   Texture.h
