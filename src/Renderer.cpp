@@ -58,17 +58,28 @@ void Renderer::init()
   const double maxX = m_datastore.get<double>("viewport-max-x");
   const double maxY = m_datastore.get<double>("viewport-max-y");
 
-  glViewport(0, 0, maxX - minX, maxY - minY);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+  set_viewport(0, 0, maxX - minX, maxY - minY);
+  set_ortho_projection(minX, maxX, minY, maxY);
 
-  gluOrtho2D(minX, maxX, minY, maxY);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  m_textures.loadTexture(m_datastore.get<std::string>("images-star"), "star");
+  load_texture(m_datastore.get<std::string>("images-star"), "star");
 
   m_starDisplayList = createStarDisplayList(m_textures);
+}
+
+void Renderer::set_viewport(int x, int y, int w, int h) {
+  glViewport(x, y, w, h);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+}
+
+void Renderer::set_ortho_projection(double left, double right, double bottom, double top) {
+  glOrtho(left, right, bottom, top, -1, 1);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+}
+
+void Renderer::load_texture(const std::string& path, const std::string& key) {
+  m_textures.loadTexture(path, key);
 }
 
 void Renderer::render(const Universe& universe) const
