@@ -103,7 +103,7 @@ void Renderer::render_stars(const Universe& universe) const
   }
 }
 
-void Renderer::renderText(int x, int y, const std::string& text) const
+void Renderer::render_text(int x, int y, const std::string& text) const
 {
   FTPixmapFont font(m_datastore.get<std::string>("debug-font-family").c_str());
 

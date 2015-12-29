@@ -22,7 +22,7 @@ class Renderer
 
     void init();
     void render(const Universe& universe) const;
-    void renderText(int x, int y, const std::string& text) const;
+    void render_text(int x, int y, const std::string& text) const;
 
     void set_viewport(int x, int y, int w, int h);
     void set_projection(double left, double right, double bottom, double top);
