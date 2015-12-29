@@ -59,7 +59,7 @@ void Renderer::init()
   const double maxY = m_datastore.get<double>("viewport-max-y");
 
   set_viewport(0, 0, maxX - minX, maxY - minY);
-  set_ortho_projection(minX, maxX, minY, maxY);
+  set_projection(minX, maxX, minY, maxY);
 
   load_texture(m_datastore.get<std::string>("images-star"), "star");
 
@@ -72,7 +72,7 @@ void Renderer::set_viewport(int x, int y, int w, int h) {
   glLoadIdentity();
 }
 
-void Renderer::set_ortho_projection(double left, double right, double bottom, double top) {
+void Renderer::set_projection(double left, double right, double bottom, double top) {
   glOrtho(left, right, bottom, top, -1, 1);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
