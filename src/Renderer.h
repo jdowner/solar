@@ -24,7 +24,6 @@ class Renderer
     void render(const Universe& universe) const;
     void renderText(int x, int y, const std::string& text) const;
 
-    void createWindow(int width, int height, const char* title);
     void set_viewport(int x, int y, int w, int h);
     void set_ortho_projection(double left, double right, double bottom, double top);
     void load_texture(const std::string& filename, const std::string& key);
