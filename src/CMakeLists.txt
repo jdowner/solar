@@ -8,8 +8,6 @@ include_directories(
 
 link_directories(${SOLAR_LIB_PATH}/lib)
 
-configure_file(VersionConfig.h.in ${SOLAR_INC_PATH}/VersionConfig.h)
-
 add_definitions(-std=c++11)
 add_executable(solar
   ArgumentHandler.cpp
@@ -29,7 +27,6 @@ add_executable(solar
   Universe.cpp
   Universe.h
   UpdateContext.h
-  VersionConfig.h.in
   )
 
 target_link_libraries(solar GL GLU ${GLFW_LIBRARIES} png ftgl yaml-cpp)
