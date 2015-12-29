@@ -95,6 +95,7 @@ void Renderer::render_stars(const Universe& universe) const
   const StarList& stars = universe.stars();
   for(StarList::const_iterator it = stars.begin(); it != stars.end(); it++){
     const Star* star = *it;
+    glColor3f(star->cr, star->cg, star->cb);
     glPushMatrix();
     glTranslatef(star->x, star->y, 0.0);
     glScalef(star->r, star->r, star->r);

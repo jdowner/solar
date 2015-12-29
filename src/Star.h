@@ -7,6 +7,9 @@ struct Star {
   double u;
   double v;
   double r;
+  double cr;
+  double cg;
+  double cb;
 };
 
 #endif // STAR_H

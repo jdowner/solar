@@ -16,6 +16,17 @@ namespace
 
 Universe::Universe()
 {
+  Star* star = new Star();
+  star->x = 0.0;
+  star->y = 0.0;
+  star->u = 0.0;
+  star->v = 0.0;
+  star->r = 50.0;
+  star->cr = 1.0;
+  star->cg = 0.0;
+  star->cb = 0.0;
+
+  m_stars.push_back(star);
 }
 
 Universe::~Universe()
