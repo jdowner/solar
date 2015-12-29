@@ -21,8 +21,15 @@ int main(int argc, char** argv)
       datastore.load(arguments.getResourcePath() + "default.yaml");
     }
 
-//    DataStore::set("debug", arguments.debug());
-//    DataStore::set("resource-path", arguments.getResourcePath());
+    datastore.set("window-height", 800.0);
+    datastore.set("window-width", 1000.0);
+
+    datastore.set("viewport-min-x", -300.0);
+    datastore.set("viewport-min-y", -300.0);
+    datastore.set("viewport-max-x", +300.0);
+    datastore.set("viewport-max-y", +300.0);
+
+    datastore.set("images-star", "/home/jdowner/repos/solar/build/share/solar/images/moon.png");
 
     Engine engine(datastore);
 
