@@ -20,19 +20,6 @@ Engine::Engine(DataStore& datastore) :
 {
 }
 
-
-#if USE_GLFW3
-#include <GLFW/glfw3.h>
-
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-  std::cout << key << std::endl;
-
-  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, GL_TRUE);
-}
-#endif // USE_GLFW3
-
 void Engine::init()
 {
   glfw::init();
