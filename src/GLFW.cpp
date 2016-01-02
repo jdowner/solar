@@ -85,6 +85,11 @@ namespace glfw
     return m_height;
   }
 
+  Window::Window(const WindowSize& size, const char* title)
+    :Window(size.width(), size.height(), title)
+  {
+  }
+
   Window::Window(int width, int height, const char* title)
   {
 #ifdef USE_GLFW3
