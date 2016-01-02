@@ -36,6 +36,7 @@ namespace glfw
   {
     public:
       Window(int width, int height, const char* title);
+      Window(const WindowSize& size, const char* title);
       explicit Window(const Window& window);
 
     public:
@@ -45,6 +46,8 @@ namespace glfw
 
       bool isOpen() const;
       int getKey(int key) const;
+
+      WindowSize size() const;
 
     public:
 #ifdef USE_GLFW3

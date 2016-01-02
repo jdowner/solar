@@ -149,4 +149,13 @@ namespace glfw
     return glfwGetKey(key);
 #endif // USE_GLFW3
   }
+
+  WindowSize Window::size() const {
+    int width;
+    int height;
+
+    glfwGetWindowSize(&width, &height);
+
+    return WindowSize(width, height);
+  }
 }
