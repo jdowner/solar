@@ -15,6 +15,19 @@ namespace glfw
   int getKey(int key);
   void swapInterval(int interval);
 
+  class WindowSize
+  {
+    public:
+      WindowSize(int width, int height);
+
+      int width() const;
+      int height() const;
+
+    private:
+      int m_width;
+      int m_height;
+  };
+
   /**
    * This class is used to abstract the GLFW interface in order to support both
    * GLFW and GLFW3.
