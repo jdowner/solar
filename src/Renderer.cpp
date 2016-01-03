@@ -87,11 +87,6 @@ void Renderer::render(const Universe& universe) const
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
-  render_stars(universe);
-}
-
-void Renderer::render_stars(const Universe& universe) const
-{
   const StarList& stars = universe.stars();
   for(StarList::const_iterator it = stars.begin(); it != stars.end(); it++){
     const Star* star = *it;
