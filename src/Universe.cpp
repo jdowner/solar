@@ -16,13 +16,13 @@ namespace
 
 Universe::Universe()
 {
-  for(int i = 0; i < 1000; ++i) {
+  for(int i = 0; i < 100; ++i) {
     Star* star = new Star();
     star->x = uniform() * 300.0;
     star->y = uniform() * 300.0;
     star->u = uniform() * 1.0;
     star->v = uniform() * 1.0;
-    star->r = 2.0;
+    star->r = 10.0;
     star->cr = 1.0;
     star->cg = 0.0;
     star->cb = 0.0;
