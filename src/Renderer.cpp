@@ -20,13 +20,20 @@ namespace
 
     glNewList(index, GL_COMPILE);
 
-    glBindTexture(GL_TEXTURE_2D, textures.getTextureHandle("star"));
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3f(1,0,1);
+    glVertex2f(0.0f, 0.0f);
+    glColor3f(1,1,1);
 
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0, -1.0);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0, 1.0);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(1.0, 1.0);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(1.0, -1.0);
+    const float pi = M_PI;
+
+    const int n = 36;
+    for(int i = 0; i <= n; ++i) {
+      const float x = cos(2 * pi * i / n);
+      const float y = sin(2 * pi * i / n);
+      glVertex2f(x, y);
+    }
+
     glEnd();
 
     glEndList();
@@ -45,13 +52,6 @@ void Renderer::init()
   glfw::swapInterval(0);
 
   glClearColor(0.0, 0.0, 0.0, 0.0);
-  glShadeModel(GL_SMOOTH);
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_ADD);
 
   const double minX = m_datastore.get<double>("viewport-min-x");
   const double minY = m_datastore.get<double>("viewport-min-y");
@@ -84,7 +84,7 @@ void Renderer::load_texture(const std::string& path, const std::string& key) {
 
 void Renderer::render(const Universe& universe) const
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
 
   const StarList& stars = universe.stars();
