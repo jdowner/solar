@@ -1,4 +1,3 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(EXECUTABLE_OUTPUT_PATH ${SOLAR_BIN_PATH})
 
 include_directories(
@@ -9,6 +8,8 @@ include_directories(
 link_directories(${SOLAR_LIB_PATH}/lib)
 
 add_definitions(-std=c++11)
+add_definitions(-DGL_GLEXT_PROTOTYPES)
+
 add_executable(solar
   ArgumentHandler.cpp
   ArgumentHandler.h
