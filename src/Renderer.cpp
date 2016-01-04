@@ -1,11 +1,26 @@
 #include "Renderer.h"
 #include <sstream>
+#include <iostream>
 #include <GL/glu.h>
 #include <FTGL/ftgl.h>
 #include <cmath>
 #include "GLFW.h"
 #include "Universe.h"
 #include "DataStore.h"
+
+const char* vertex_shader = 
+  "#version 130\n"
+  "in vec4 position;\n"
+  "void main() {\n"
+  "  gl_Position = position;\n"
+  "}";
+
+const char* fragment_shader =
+  "#version 130\n"
+  "out vec4 out_color;\n"
+  "void main() {\n"
+  "  out_color = vec4(1.0, 1.0, 1.0, 1.0);\n"
+  "}";
 
 namespace
 {
@@ -42,8 +57,9 @@ namespace
   }
 }
 
-Renderer::Renderer(DataStore& datastore):
-  m_datastore(datastore)
+Renderer::Renderer(DataStore& datastore)
+  : m_datastore(datastore)
+  , m_shader_program(0)
 {
 }
 
@@ -61,9 +77,41 @@ void Renderer::init()
   set_viewport(0, 0, maxX - minX, maxY - minY);
   set_projection(minX, maxX, minY, maxY);
 
-  load_texture(m_datastore.get<std::string>("images-star"), "star");
-
   m_starDisplayList = createStarDisplayList(m_textures);
+
+
+  m_shader_program = glCreateProgram();
+
+  unsigned int handle;
+  
+  handle = load_shader(vertex_shader, GL_VERTEX_SHADER);
+  glAttachShader(m_shader_program, handle);
+  glDeleteShader(handle);
+  
+  handle = load_shader(fragment_shader, GL_FRAGMENT_SHADER);
+  glAttachShader(m_shader_program, handle);
+  glDeleteShader(handle);
+
+  glLinkProgram(m_shader_program);
+  glUseProgram(m_shader_program);
+}
+
+unsigned int Renderer::load_shader(const char* shader, unsigned int type) const {
+  unsigned int handle = glCreateShader(type);
+  glShaderSource(handle, 1, &shader, NULL);
+  glCompileShader(handle);
+
+  GLint test;
+  glGetShaderiv(handle, GL_COMPILE_STATUS, &test);
+  if(!test){
+    std::cerr << "vertex shader compilation failed:" << std::endl;
+
+    std::vector<char> log(512);
+    glGetShaderInfoLog(handle, log.size(), NULL, &log[0]);
+    std::cerr << &log[0] << std::endl;
+  }
+
+  return handle;
 }
 
 void Renderer::set_viewport(int x, int y, int w, int h) {

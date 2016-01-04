@@ -30,11 +30,13 @@ class Renderer
 
   private:
     void render_stars(const Universe& universe) const;
+    unsigned int load_shader(const char* shader, unsigned int type) const;
 
   private:
     unsigned int m_starDisplayList;
     TextureManager m_textures;
     DataStore m_datastore;
+    unsigned int m_shader_program;
 };
 
 #endif // RENDERER_H
