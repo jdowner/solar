@@ -154,7 +154,11 @@ namespace glfw
     int width;
     int height;
 
+#ifdef USE_GLFW3
+    glfwGetWindowSize(m_window, &width, &height);
+#else
     glfwGetWindowSize(&width, &height);
+#endif
 
     return WindowSize(width, height);
   }
