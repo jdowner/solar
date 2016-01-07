@@ -37,6 +37,8 @@ class Renderer
     TextureManager m_textures;
     DataStore m_datastore;
     unsigned int m_shader_program;
+    unsigned int m_star_vao;
+    unsigned int m_star_vbo;
 };
 
 #endif // RENDERER_H

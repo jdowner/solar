@@ -60,6 +60,8 @@ namespace
 Renderer::Renderer(DataStore& datastore)
   : m_datastore(datastore)
   , m_shader_program(0)
+  , m_star_vao(0)
+  , m_star_vbo(0)
 {
 }
 
