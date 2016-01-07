@@ -8,11 +8,11 @@
 #include "Universe.h"
 #include "DataStore.h"
 
-const char* vertex_shader = 
+const char* vertex_shader =
   "#version 130\n"
   "in vec4 position;\n"
   "void main() {\n"
-  "  gl_Position = position;\n"
+  "  gl_Position = gl_ModelViewProjectionMatrix * position;\n"
   "}";
 
 const char* fragment_shader =
@@ -21,41 +21,6 @@ const char* fragment_shader =
   "void main() {\n"
   "  out_color = vec4(1.0, 1.0, 1.0, 1.0);\n"
   "}";
-
-namespace
-{
-  double rad2deg(double rad)
-  {
-    return 57.29577951308232087721 * rad;
-  }
-
-  unsigned int createStarDisplayList(const TextureManager& textures)
-  {
-    unsigned int index = glGenLists(1);
-
-    glNewList(index, GL_COMPILE);
-
-    glBegin(GL_TRIANGLE_FAN);
-    glColor3f(1,0,1);
-    glVertex2f(0.0f, 0.0f);
-    glColor3f(1,1,1);
-
-    const float pi = M_PI;
-
-    const int n = 36;
-    for(int i = 0; i <= n; ++i) {
-      const float x = cos(2 * pi * i / n);
-      const float y = sin(2 * pi * i / n);
-      glVertex2f(x, y);
-    }
-
-    glEnd();
-
-    glEndList();
-
-    return index;
-  }
-}
 
 Renderer::Renderer(DataStore& datastore)
   : m_datastore(datastore)
@@ -79,23 +44,43 @@ void Renderer::init()
   set_viewport(0, 0, maxX - minX, maxY - minY);
   set_projection(minX, maxX, minY, maxY);
 
-  m_starDisplayList = createStarDisplayList(m_textures);
+  glGenVertexArrays(1, &m_star_vao);
+  glBindVertexArray(m_star_vao);
 
+  std::vector<GLfloat> vertices;
+  vertices.push_back(0.0f);
+  vertices.push_back(0.0f);
+
+  for(int i = 0; i <= 32; ++i){
+    vertices.push_back(cos(2 * M_PI * i / 32));
+    vertices.push_back(sin(2 * M_PI * i / 32));
+  }
+
+  GLuint vbo;
+  glGenBuffers(1, &m_star_vbo);
+
+  glBindBuffer(GL_ARRAY_BUFFER, m_star_vbo);
+
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
   m_shader_program = glCreateProgram();
 
   unsigned int handle;
-  
+
   handle = load_shader(vertex_shader, GL_VERTEX_SHADER);
   glAttachShader(m_shader_program, handle);
   glDeleteShader(handle);
-  
+
   handle = load_shader(fragment_shader, GL_FRAGMENT_SHADER);
   glAttachShader(m_shader_program, handle);
   glDeleteShader(handle);
 
   glLinkProgram(m_shader_program);
   glUseProgram(m_shader_program);
+
+  GLint position = glGetAttribLocation(m_shader_program, "position");
+  glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(position);
 }
 
 unsigned int Renderer::load_shader(const char* shader, unsigned int type) const {
@@ -137,14 +122,13 @@ void Renderer::render(const Universe& universe) const
   glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
 
-  const StarList& stars = universe.stars();
-  for(StarList::const_iterator it = stars.begin(); it != stars.end(); it++){
-    const Star* star = *it;
-    glColor3f(star->cr, star->cg, star->cb);
+  glBindVertexArray(m_star_vao);
+
+  for(auto star: universe.stars()){
     glPushMatrix();
-    glTranslatef(star->x, star->y, 0.0);
+    glTranslatef(star->x, star->y, 0);
     glScalef(star->r, star->r, star->r);
-    glCallList(m_starDisplayList);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 68);
     glPopMatrix();
   }
 }
