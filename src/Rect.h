@@ -8,6 +8,6 @@ class Rect {
     T y;
     T w;
     T h;
-}
+};
 
 #endif // rect_h
