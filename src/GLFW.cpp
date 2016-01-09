@@ -7,6 +7,89 @@
   #include <GL/glfw.h>
 #endif // USE_GLFW3
 
+namespace {
+#ifdef USE_GLFW3
+  class WindowImpl : public WindowInterface {
+    public:
+      WindowImpl(int width, int height, const char* title) {
+        m_window = glfwCreateWindow(width, height, title, NULL, NULL);
+      }
+
+    public:
+      void swap_buffers() const override {
+        glfwSwapBuffers(m_window);
+      }
+
+      void make_current() const override {
+        glfwMakeContextCurrent(m_window);
+      }
+
+      void poll_events() const override {
+        glfwPollEvents();
+      }
+
+      bool is_open() const override {
+        return true;
+      }
+
+      int get_key(int key) const override {
+        return glfwGetKey(m_window, key);
+      }
+
+      WindowSize size() const override {
+        int width;
+        int height;
+
+        glfwGetWindowSize(m_window, &width, &height);
+
+        return WindowSize(width, height);
+      }
+
+    private:
+      mutable GLFWwindow* m_window;
+  };
+#else // USE_GLFW3
+  class WindowImpl : public WindowInterface {
+    public:
+      WindowImpl(int width, int height, const char* title)
+      {
+        if (!glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, GLFW_WINDOW))
+        {
+          throw std::runtime_error("Unable to create window");
+        }
+      }
+
+    public:
+      void swap_buffers() const override {
+        glfwSwapBuffers();
+      }
+
+      void make_current() const override {
+      }
+
+      void poll_events() const override {
+      }
+
+      bool is_open() const override {
+        return glfwGetWindowParam(GLFW_OPENED);
+      }
+
+      int get_key(int key) const override {
+        return glfwGetKey(key);
+      }
+
+      WindowSize size() const override {
+        int width;
+        int height;
+
+        glfwGetWindowSize(&width, &height);
+
+        return WindowSize(width, height);
+      }
+  };
+#endif // USE_GLFW3
+}
+
 
 namespace glfw
 {

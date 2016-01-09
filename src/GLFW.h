@@ -28,6 +28,19 @@ class WindowSize
 };
 
 
+class WindowInterface {
+  public:
+    virtual void swap_buffers() const = 0;
+    virtual void make_current() const = 0;
+    virtual void poll_events() const = 0;
+
+    virtual bool is_open() const = 0;
+    virtual int get_key(int key) const = 0;
+
+    virtual WindowSize size() const = 0;
+};
+
+
 namespace glfw
 {
   void init();
