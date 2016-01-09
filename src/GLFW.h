@@ -1,9 +1,43 @@
 #ifndef GLFW_H
 #define GLFW_H
 
-#ifdef USE_GLFW3
-class GLFWwindow;
-#endif // USE_GLFW3
+#include <memory>
+
+class WindowSize
+{
+  public:
+    WindowSize(int width, int height)
+      : m_width(width)
+      , m_height(height)
+    {
+    }
+
+    int width() const {
+      return m_width;
+    }
+
+    int height() const {
+      return m_height;
+    }
+
+  private:
+    int m_width;
+    int m_height;
+};
+
+
+class WindowInterface {
+  public:
+    virtual void swap_buffers() const = 0;
+    virtual void make_current() const = 0;
+    virtual void poll_events() const = 0;
+
+    virtual bool is_open() const = 0;
+    virtual int get_key(int key) const = 0;
+
+    virtual WindowSize size() const = 0;
+};
+
 
 namespace glfw
 {
@@ -12,21 +46,8 @@ namespace glfw
 
   void sleep(double duration);
   double time();
-  int getKey(int key);
-  void swapInterval(int interval);
-
-  class WindowSize
-  {
-    public:
-      WindowSize(int width, int height);
-
-      int width() const;
-      int height() const;
-
-    private:
-      int m_width;
-      int m_height;
-  };
+  int get_key(int key);
+  void swap_interval(int interval);
 
   /**
    * This class is used to abstract the GLFW interface in order to support both
@@ -40,19 +61,17 @@ namespace glfw
       explicit Window(const Window& window);
 
     public:
-      void swapBuffers() const;
-      void makeCurrent() const;
-      void pollEvents() const;
+      void swap_buffers() const;
+      void make_current() const;
+      void poll_events() const;
 
-      bool isOpen() const;
-      int getKey(int key) const;
+      bool is_open() const;
+      int get_key(int key) const;
 
       WindowSize size() const;
 
     public:
-#ifdef USE_GLFW3
-      mutable GLFWwindow* m_window;
-#endif // USE_GLFW3
+      std::shared_ptr<WindowInterface> m_impl;
   };
 
   extern const int KEY_LEFT;

@@ -28,7 +28,7 @@ void Engine::init()
   const double width = m_datastore.get<float>("window-width");
 
   m_window = new glfw::Window(width, height, "Solar");
-  m_window->makeCurrent();
+  m_window->make_current();
 
   m_renderer.init();
 
@@ -48,15 +48,15 @@ bool Engine::running() const
 void Engine::render()
 {
   m_renderer.render(m_universe);
-  m_window->swapBuffers();
+  m_window->swap_buffers();
 }
 
 
 void Engine::update()
 {
-  m_window->pollEvents();
+  m_window->poll_events();
 
-  m_running = !m_window->getKey(glfw::KEY_ESC) && m_window->isOpen();
+  m_running = !m_window->get_key(glfw::KEY_ESC) && m_window->is_open();
 
   UpdateContext context = createUpdateContext();
   m_universe.update(context);
@@ -69,12 +69,12 @@ UpdateContext Engine::createUpdateContext() const
   UpdateContext context;
   context.currentTime = glfw::time();
   context.frameRate = m_frameRate;
-  context.keyLeft = (glfw::KEY_PRESS == m_window->getKey(glfw::KEY_LEFT));
-  context.keyRight = (glfw::KEY_PRESS == m_window->getKey(glfw::KEY_RIGHT));
-  context.keyUp = (glfw::KEY_PRESS == m_window->getKey(glfw::KEY_UP));
-  context.keyG = (glfw::KEY_PRESS == m_window->getKey(glfw::KEY_G));
-  context.keyH = (glfw::KEY_PRESS == m_window->getKey(glfw::KEY_H));
-  context.keyTab = (glfw::KEY_PRESS == m_window->getKey(glfw::KEY_TAB));
+  context.keyLeft = (glfw::KEY_PRESS == m_window->get_key(glfw::KEY_LEFT));
+  context.keyRight = (glfw::KEY_PRESS == m_window->get_key(glfw::KEY_RIGHT));
+  context.keyUp = (glfw::KEY_PRESS == m_window->get_key(glfw::KEY_UP));
+  context.keyG = (glfw::KEY_PRESS == m_window->get_key(glfw::KEY_G));
+  context.keyH = (glfw::KEY_PRESS == m_window->get_key(glfw::KEY_H));
+  context.keyTab = (glfw::KEY_PRESS == m_window->get_key(glfw::KEY_TAB));
 
   return context;
 }

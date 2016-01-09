@@ -13,6 +13,8 @@ add_definitions(-DGL_GLEXT_PROTOTYPES)
 add_executable(solar
   ArgumentHandler.cpp
   ArgumentHandler.h
+  Canvas.cpp
+  Canvas.h
   DataStore.cpp
   DataStore.h
   Engine.cpp
@@ -20,6 +22,7 @@ add_executable(solar
   GLFW.cpp
   GLFW.h
   main.cpp
+  Rect.h
   Renderer.cpp
   Renderer.h
   Texture.h
