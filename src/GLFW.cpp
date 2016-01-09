@@ -48,6 +48,11 @@ namespace {
     private:
       mutable GLFWwindow* m_window;
   };
+
+  std::shared_ptr<WindowInterface> create_window(int width, int height, const char* title){
+    return std::shared_ptr<WindowInterface>(new WindowImpl(width, height, title));
+  }
+
 #else // USE_GLFW3
   class WindowImpl : public WindowInterface {
     public:
@@ -87,6 +92,16 @@ namespace {
         return WindowSize(width, height);
       }
   };
+
+  std::shared_ptr<WindowInterface> global_instance;
+
+  std::shared_ptr<WindowInterface> create_window(int width, int height, const char* title){
+    if(global_instance.use_count() == 0){
+      global_instance.reset(new WindowImpl(width, height, title));
+    }
+
+    return global_instance;
+  }
 #endif // USE_GLFW3
 }
 
@@ -160,75 +175,41 @@ namespace glfw
   }
 
   Window::Window(int width, int height, const char* title)
+    : m_impl(create_window(width, height, title))
   {
-#ifdef USE_GLFW3
-    m_window = glfwCreateWindow(width, height, title, NULL, NULL);
-#else
-    if (!glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, GLFW_WINDOW))
-    {
-      throw std::runtime_error("Unable to create window");
-    }
-#endif // USE_GLFW3
   }
 
   Window::Window(const Window& window)
   {
-#ifdef USE_GLFW3
-    m_window = window.m_window;
-#endif // USE_GLFW3
+    m_impl = window.m_impl;
   }
 
   void Window::swap_buffers() const
   {
-#ifdef USE_GLFW3
-    glfwSwapBuffers(m_window);
-#else
-    glfwSwapBuffers();
-#endif // USE_GLFW3
+    m_impl->swap_buffers();
   }
 
   bool Window::is_open() const
   {
-#ifdef USE_GLFW3
-    return true;
-#else
-    return glfwGetWindowParam(GLFW_OPENED);
-#endif // USE_GLFW3
+    return m_impl->is_open();
   }
 
   void Window::make_current() const
   {
-#ifdef USE_GLFW3
-    glfwMakeContextCurrent(m_window);
-#endif // USE_GLFW3
+    m_impl->make_current();
   }
 
   void Window::poll_events() const
   {
-#ifdef USE_GLFW3
-    glfwPollEvents();
-#endif // USE_GLFW3
+    m_impl->poll_events();
   }
 
   int Window::get_key(int key) const
   {
-#ifdef USE_GLFW3
-    return glfwGetKey(m_window, key);
-#else
-    return glfwGetKey(key);
-#endif // USE_GLFW3
+    return m_impl->get_key(key);
   }
 
   WindowSize Window::size() const {
-    int width;
-    int height;
-
-#ifdef USE_GLFW3
-    glfwGetWindowSize(m_window, &width, &height);
-#else
-    glfwGetWindowSize(&width, &height);
-#endif
-
-    return WindowSize(width, height);
+    return m_impl->size();
   }
 }

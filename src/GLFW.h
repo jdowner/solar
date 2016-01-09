@@ -1,9 +1,7 @@
 #ifndef GLFW_H
 #define GLFW_H
 
-#ifdef USE_GLFW3
-class GLFWwindow;
-#endif // USE_GLFW3
+#include <memory>
 
 class WindowSize
 {
@@ -73,9 +71,7 @@ namespace glfw
       WindowSize size() const;
 
     public:
-#ifdef USE_GLFW3
-      mutable GLFWwindow* m_window;
-#endif // USE_GLFW3
+      std::shared_ptr<WindowInterface> m_impl;
   };
 
   extern const int KEY_LEFT;
