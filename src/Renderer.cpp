@@ -32,7 +32,7 @@ Renderer::Renderer(DataStore& datastore)
 
 void Renderer::init()
 {
-  glfw::swapInterval(0);
+  glfw::swap_interval(0);
 
   glClearColor(0.0, 0.0, 0.0, 0.0);
 

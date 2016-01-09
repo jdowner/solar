@@ -66,7 +66,7 @@ namespace glfw
 #endif // USE_GLFW3
   }
 
-  void swapInterval(int interval)
+  void swap_interval(int interval)
   {
     glfwSwapInterval(interval);
   }
@@ -109,7 +109,7 @@ namespace glfw
 #endif // USE_GLFW3
   }
 
-  void Window::swapBuffers() const
+  void Window::swap_buffers() const
   {
 #ifdef USE_GLFW3
     glfwSwapBuffers(m_window);
@@ -118,7 +118,7 @@ namespace glfw
 #endif // USE_GLFW3
   }
 
-  bool Window::isOpen() const
+  bool Window::is_open() const
   {
 #ifdef USE_GLFW3
     return true;
@@ -127,21 +127,21 @@ namespace glfw
 #endif // USE_GLFW3
   }
 
-  void Window::makeCurrent() const
+  void Window::make_current() const
   {
 #ifdef USE_GLFW3
     glfwMakeContextCurrent(m_window);
 #endif // USE_GLFW3
   }
 
-  void Window::pollEvents() const
+  void Window::poll_events() const
   {
 #ifdef USE_GLFW3
     glfwPollEvents();
 #endif // USE_GLFW3
   }
 
-  int Window::getKey(int key) const
+  int Window::get_key(int key) const
   {
 #ifdef USE_GLFW3
     return glfwGetKey(m_window, key);

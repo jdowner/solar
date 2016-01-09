@@ -12,8 +12,8 @@ namespace glfw
 
   void sleep(double duration);
   double time();
-  int getKey(int key);
-  void swapInterval(int interval);
+  int get_key(int key);
+  void swap_interval(int interval);
 
   class WindowSize
   {
@@ -40,12 +40,12 @@ namespace glfw
       explicit Window(const Window& window);
 
     public:
-      void swapBuffers() const;
-      void makeCurrent() const;
-      void pollEvents() const;
+      void swap_buffers() const;
+      void make_current() const;
+      void poll_events() const;
 
-      bool isOpen() const;
-      int getKey(int key) const;
+      bool is_open() const;
+      int get_key(int key) const;
 
       WindowSize size() const;
 
