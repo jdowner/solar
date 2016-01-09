@@ -71,20 +71,6 @@ namespace glfw
     glfwSwapInterval(interval);
   }
 
-  WindowSize::WindowSize(int width, int height)
-    : m_width(width)
-    , m_height(height)
-  {
-  }
-
-  int WindowSize::width() const {
-    return m_width;
-  }
-
-  int WindowSize::height() const {
-    return m_height;
-  }
-
   Window::Window(const WindowSize& size, const char* title)
     :Window(size.width(), size.height(), title)
   {
